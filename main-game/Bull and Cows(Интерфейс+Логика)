@@ -1,0 +1,621 @@
+import tkinter as tk
+import random
+import time
+from pygame import mixer
+import os
+
+def main_game_medium(start_time):
+    mechanical_digits = ""
+    while len(mechanical_digits) != 4:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+    count = 0
+
+    while True:
+        flag = True
+        cows = 0
+        bulls = 0
+        user_guess = str(input('введите ваше четырехзначное число:'))
+        if len(user_guess) != 4:
+            print('число должно состоять из 4 элементов')
+            continue
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+        if flag == False:
+            if count == 0:
+                count += 0
+            else:
+                count -= 0
+            print(f'число должно быть неповторяющимся, количество ваших попыток: {count}')
+            continue
+        if flag:
+            for i in range(4):
+                if user_guess[i] == (mechanical_digits)[i]:
+                    bulls += 1
+                if user_guess[i] in (mechanical_digits) and user_guess[i] != mechanical_digits[i]:
+                    cows += 1
+            count += 1
+            if count == 10:
+                return print('вы исчерпали количество попыток, хотите попробовать еще раз?')
+            if bulls != 4:
+                print(f'коровы: {cows}')
+                print(f'быки: {bulls}')
+                print(f'попыток: {count}')
+            else:
+                elapsed = time.time() - start_time
+                minutes = int(elapsed // 60)
+                seconds = int(elapsed % 60)
+                print("~" * 100)
+                print(f'вы выйграли!!! ваше количество попыток: {count}')
+                print(f'Ваше время: Минуты - {minutes}, Секунды - {seconds}')
+                print("~" * 100)
+
+
+def main_game_easy(start_time):
+    mechanical_digits = ""
+    while len(mechanical_digits) != 3:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+    count = 0
+
+    while True:
+        flag = True
+        cows = 0
+        bulls = 0
+        user_guess = str(input('введите ваше трехзначное число:'))
+        if len(user_guess) != 3:
+            print('число должно состоять из 3 элементов')
+            continue
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+        if flag == False:
+            if count == 0:
+                count += 0
+            else:
+                count -= 0
+            print(f'число должно быть неповторяющимся, количество ваших попыток: {count}')
+            continue
+        if flag:
+            for i in range(3):
+                if user_guess[i] == (mechanical_digits)[i]:
+                    bulls += 1
+                if user_guess[i] in (mechanical_digits) and user_guess[i] != mechanical_digits[i]:
+                    cows += 1
+            count += 1
+            if count == 15:
+                return print('вы исчерпали количество попыток, хотите попробовать еще раз?')
+            if bulls != 3:
+                print(f'коровы: {cows}')
+                print(f'быки: {bulls}')
+                print(f'попыток: {count}')
+            else:
+                elapsed = time.time() - start_time
+                minutes = int(elapsed // 60)
+                seconds = int(elapsed % 60)
+                print("~" * 100)
+                print(f'вы выйграли!!! ваше количество попыток: {count}')
+                print(f'Ваше время: {minutes} мин {seconds}.{int((elapsed % 1) * 100):02d} сек')
+                print("~" * 100)
+
+
+def main_game_hard(start_time):
+    mechanical_digits = ""
+    while len(mechanical_digits) != 5:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+    count = 0
+    while True:
+        m = []
+        flag = True
+        cows = 0
+        bulls = 0
+        user_guess = str(input('введите ваше пятизначное число:'))
+        if len(user_guess) != 5:
+            print('число должно состоять из 5 элементов')
+            continue
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+        if flag == False:
+            if count == 0:
+                count += 0
+            else:
+                count += 0
+            print(f'число должно быть неповторяющимся, количество ваших попыток: {count}')
+            continue
+        if flag:
+            for i in range(5):
+                if user_guess[i] == (mechanical_digits)[i]:
+                    bulls += 1
+                if user_guess[i] in (mechanical_digits) and user_guess[i] != mechanical_digits[i]:
+                    cows += 1
+            count += 1
+            if count == 7:
+                return print(
+                    f'вы исчерпали количество попыток, хотите попробовать еще раз?, число загаданное компьютером: {mechanical_digits}')
+            if bulls != 5:
+                print(f'коровы: {cows}')
+                print(f'быки: {bulls}')
+                print(f'попыток: {count}')
+            else:
+                elapsed = time.time() - start_time
+                minutes = int(elapsed // 60)
+                seconds = int(elapsed % 60)
+                print("~" * 100)
+                print(f'вы выйграли!!! ваше количество попыток: {count}')
+                print(f'Ваше время: Минуты - {minutes}, Секунды - {seconds}')
+                print("~" * 100)
+
+def play_easy_game(start_time, result_widget, attempts_label, timer_label):
+    mechanical_digits = ""
+    while len(mechanical_digits) != 3:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+
+    count = 0
+    game_active = True
+
+    def check_guess():
+        nonlocal count, game_active
+        if not game_active:
+            return
+
+        user_guess = Vvod.get().strip()
+        Vvod.delete(0, tk.END)
+
+        # Проверки из твоей логики
+        if len(user_guess) != 3:
+            result_widget.insert(tk.END, 'число должно состоять из 3 элементов\n')
+            result_widget.see(tk.END)
+            return
+
+        flag = True
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+
+        if not flag:
+            result_widget.insert(tk.END, f'число должно быть неповторяющимся, количество ваших попыток: {count}\n')
+            result_widget.see(tk.END)
+            return
+
+        # Подсчет быков и коров из твоей логики
+        cows = 0
+        bulls = 0
+        for i in range(3):
+            if user_guess[i] == mechanical_digits[i]:
+                bulls += 1
+            if user_guess[i] in mechanical_digits and user_guess[i] != mechanical_digits[i]:
+                cows += 1
+
+        count += 1
+        attempts_label.config(text=f'Попытки: {count}/15')
+
+        # Вывод результата
+        result_widget.insert(tk.END, f'Попытка {count}: {user_guess} - Быки: {bulls}, Коровы: {cows}\n')
+        result_widget.see(tk.END)
+
+        # Проверка условий окончания игры
+        if count == 15:
+            result_widget.insert(tk.END, 'вы исчерпали количество попыток, хотите попробовать еще раз?\n')
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+        if bulls == 3:
+            elapsed = time.time() - start_time
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.insert(tk.END, f'вы выйграли!!! ваше количество попыток: {count}\n')
+            result_widget.insert(tk.END, f'Ваше время: {minutes} мин {seconds}.{int((elapsed % 1) * 100):02d} сек\n')
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+    return check_guess
+
+
+def play_medium_game(start_time, result_widget, attempts_label, timer_label):
+    """Адаптированная версия main_game_medium для интерфейса"""
+    mechanical_digits = ""
+    while len(mechanical_digits) != 4:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+
+    count = 0
+    game_active = True
+
+    def check_guess():
+        nonlocal count, game_active
+        if not game_active:
+            return
+
+        user_guess = Vvod.get().strip()
+        Vvod.delete(0, tk.END)
+
+        if len(user_guess) != 4:
+            result_widget.insert(tk.END, 'число должно состоять из 4 элементов\n')
+            result_widget.see(tk.END)
+            return
+
+        flag = True
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+
+        if not flag:
+            result_widget.insert(tk.END, f'число должно быть неповторяющимся, количество ваших попыток: {count}\n')
+            result_widget.see(tk.END)
+            return
+
+        cows = 0
+        bulls = 0
+        for i in range(4):
+            if user_guess[i] == mechanical_digits[i]:
+                bulls += 1
+            if user_guess[i] in mechanical_digits and user_guess[i] != mechanical_digits[i]:
+                cows += 1
+
+        count += 1
+        attempts_label.config(text=f'Попытки: {count}/10')
+
+        result_widget.insert(tk.END, f'Попытка {count}: {user_guess} - Быки: {bulls}, Коровы: {cows}\n')
+        result_widget.see(tk.END)
+
+        if count == 10:
+            result_widget.insert(tk.END, 'вы исчерпали количество попыток, хотите попробовать еще раз?\n')
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+        if bulls == 4:
+            elapsed = time.time() - start_time
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.insert(tk.END, f'вы выйграли!!! ваше количество попыток: {count}\n')
+            result_widget.insert(tk.END, f'Ваше время: Минуты - {minutes}, Секунды - {seconds}\n')
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+    return check_guess
+
+
+def play_hard_game(start_time, result_widget, attempts_label, timer_label):
+    mechanical_digits = ""
+    while len(mechanical_digits) != 5:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in mechanical_digits:
+            mechanical_digits += str(random_digit)
+
+    count = 0
+    game_active = True
+
+    def check_guess():
+        nonlocal count, game_active
+        if not game_active:
+            return
+
+        user_guess = Vvod.get().strip()
+        Vvod.delete(0, tk.END)
+
+        if len(user_guess) != 5:
+            result_widget.insert(tk.END, 'число должно состоять из 5 элементов\n')
+            result_widget.see(tk.END)
+            return
+
+        flag = True
+        for i in user_guess:
+            if user_guess.count(i) != 1:
+                flag = False
+                break
+
+        if not flag:
+            result_widget.insert(tk.END, f'число должно быть неповторяющимся, количество ваших попыток: {count}\n')
+            result_widget.see(tk.END)
+            return
+
+        cows = 0
+        bulls = 0
+        for i in range(5):
+            if user_guess[i] == mechanical_digits[i]:
+                bulls += 1
+            if user_guess[i] in mechanical_digits and user_guess[i] != mechanical_digits[i]:
+                cows += 1
+
+        count += 1
+        attempts_label.config(text=f'Попытки: {count}/7')
+
+        result_widget.insert(tk.END, f'Попытка {count}: {user_guess} - Быки: {bulls}, Коровы: {cows}\n')
+        result_widget.see(tk.END)
+
+        if count == 7:
+            result_widget.insert(tk.END,
+                                 f'вы исчерпали количество попыток, хотите попробовать еще раз?, число загаданное компьютером: {mechanical_digits}\n')
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+        if bulls == 5:
+            elapsed = time.time() - start_time
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.insert(tk.END, f'вы выйграли!!! ваше количество попыток: {count}\n')
+            result_widget.insert(tk.END, f'Ваше время: Минуты - {minutes}, Секунды - {seconds}\n')
+            result_widget.insert(tk.END, "~" * 50 + "\n")
+            result_widget.see(tk.END)
+            game_active = False
+            Proverit.config(state='disabled')
+
+    return check_guess
+
+mixer.init()
+
+
+def play_music():
+    try:
+        mixer.music.load('C:\\Users\\Егор\\Downloads\\Пикник.mp3')
+        mixer.music.play(-1)
+        mixer.music.set_volume(1)
+        print("Музыка играет")
+    except Exception as e:
+        print(f"Ошибка: {e}")
+
+
+play_music()
+
+window = tk.Tk()
+window.title('Bull and Cows')
+window.geometry('1920x1080')
+
+priglas = tk.Label(
+    window,
+    text='Добро пожаловать в игру!',
+    font=('Times New Roman', 30, 'bold'),
+    fg='black',
+    bg='white',
+)
+priglas.pack(pady=(50, 0))
+
+name = tk.Label(
+    window,
+    text='Bull and Cows',
+    font=('Times New Roman', 30, 'bold'),
+    fg='red',
+    bg='white',
+)
+name.pack(pady=(0, 100))
+
+
+def Knopka_nachalo():
+    status.config(text='Игра началась!')
+    Anigilacia()
+
+
+def Anigilacia():
+    for widget in window.winfo_children():
+        widget.destroy()
+
+    zagolovok = tk.Label(
+        window,
+        text='Выбери уровень сложности',
+        fg='blue',
+        bg='white',
+        font=('Times New Roman', 30)
+    )
+    zagolovok.pack(pady=(50, 0))
+
+    easy_button = tk.Button(window, text='Лёгкий (3 цифры)', bg='green', font=('Times New Roman', 30, 'bold'),
+                            command=lambda: pusk(3))
+    easy_button.pack(pady=(100, 40))
+
+    medium_button = tk.Button(window, text='Средний (4 цифры)', bg='yellow', font=('Times New Roman', 30, 'bold'),
+                              command=lambda: pusk(4))
+    medium_button.pack(pady=40)
+
+    hard_button = tk.Button(window, text='Сложный (5 цифр)', bg='red', font=('Times New Roman', 30, 'bold'),
+                            command=lambda: pusk(5))
+    hard_button.pack(pady=40)
+
+    back_button = tk.Button(window, text='Назад', command=Yroven)
+    back_button.pack(pady=10)
+
+
+def Yroven():
+    for widget in window.winfo_children():
+        widget.destroy()
+
+    priglas = tk.Label(
+        window,
+        text='Добро пожаловать в игру!',
+        font=('Times New Roman', 30, 'bold'),
+        fg='black',
+        bg='white',
+    )
+    priglas.pack(pady=(50, 0))
+
+    name = tk.Label(
+        window,
+        text='Bull and Cows',
+        font=('Times New Roman', 30, 'bold'),
+        fg='red',
+        bg='white',
+    )
+    name.pack(pady=(0, 100))
+
+    start = tk.Button(
+        window,
+        text='Начать игру',
+        command=Knopka_nachalo,
+        font=('Times New Roman', 50, 'bold'),
+        fg='green',
+        bg='white',
+    )
+    start.pack(pady=(50, 0))
+
+    global status
+    status = tk.Label(
+        window,
+        text='Нажмите кнопку чтобы начать',
+        font=('Times New Roman', 10, 'bold'),
+    )
+    status.pack(pady=(0, 0))
+
+
+def pusk(level):
+    for widget in window.winfo_children():
+        widget.destroy()
+
+    if level == 3:
+        text1 = 'Лёгкий уровень'
+        max_cifr = 15
+    elif level == 4:
+        text1 = 'Средний уровень'
+        max_cifr = 10
+    else:
+        text1 = 'Сложный уровень'
+        max_cifr = 7
+
+    # Запоминаем время начала
+    start_time = time.time()
+
+    # Создаем элементы интерфейса
+    uga = tk.Label(
+        window,
+        text='Угадай число!',
+        font=('Times New Roman', 28, 'bold'),
+        fg='black',
+        bg='white',
+    )
+    uga.pack(pady=(30, 10))
+
+    LvL = tk.Label(
+        window,
+        text=text1,
+        font=('Times New Roman', 25),
+        fg='black',
+        bg='white',
+    )
+    LvL.pack(pady=(0, 20))
+
+    # Счетчик попыток
+    attempts_label = tk.Label(
+        window,
+        text=f'Попытки: 0/{max_cifr}',
+        font=('Times New Roman', 18, 'bold'),
+        fg='red',
+        bg='white'
+    )
+    attempts_label.pack(pady=(0, 10))
+
+    # Таймер
+    timer_label = tk.Label(
+        window,
+        text='Время: 0:00',
+        font=('Times New Roman', 16),
+        fg='blue',
+        bg='white'
+    )
+    timer_label.pack(pady=(0, 20))
+
+    instruction = tk.Label(
+        window,
+        text=f"Введите {level}-значное число c неповторяющимися цифрами:",
+        font=('Times New Roman', 16),
+        fg='black',
+        bg='white',
+    )
+    instruction.pack(pady=(0, 10))
+
+    global Vvod
+    Vvod = tk.Entry(
+        window,
+        font=('Times New Roman', 20),
+        width=level + 2,
+        justify='center',
+    )
+    Vvod.pack(pady=20)
+    Vvod.focus()
+
+    resultat = tk.Text(
+        window,
+        width=60,
+        height=10,
+        font=('Times New Roman', 12),
+    )
+    resultat.pack(pady=20, padx=20)
+
+    # Функция для обновления таймера
+    def update_timer():
+        elapsed = time.time() - start_time
+        minutes = int(elapsed // 60)
+        seconds = int(elapsed % 60)
+        timer_label.config(text=f'Время: {minutes}:{seconds:02d}')
+        window.after(1000, update_timer)  # Обновляем каждую секунду
+
+
+    if level == 3:
+        check_function = play_easy_game(start_time, resultat, attempts_label, timer_label)
+    elif level == 4:
+        check_function = play_medium_game(start_time, resultat, attempts_label, timer_label)
+    else:
+        check_function = play_hard_game(start_time, resultat, attempts_label, timer_label)
+
+    global Proverit
+    Proverit = tk.Button(
+        window,
+        text='Проверить',
+        font=('Times New Roman', 20),
+        bg='lightgreen',
+        command=check_function
+    )
+    Proverit.pack(pady=10)
+
+    nazad = tk.Button(
+        window,
+        text='Назад к выбору уровня',
+        font=('Times New Roman', 14, 'bold'),
+        fg='green',
+        bg='white',
+        command=Anigilacia
+    )
+    nazad.pack(pady=10)
+
+    update_timer()
+
+
+start = tk.Button(
+    window,
+    text='Начать игру',
+    command=Knopka_nachalo,
+    font=('Times New Roman', 50, 'bold'),
+    fg='green',
+    bg='white',
+)
+start.pack(pady=20)
+
+status = tk.Label(
+    window,
+    text='Нажмите кнопку чтобы начать',
+    font=('Times New Roman', 12, 'bold'),
+)
+status.pack()
+
+window.mainloop()
