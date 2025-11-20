@@ -151,4 +151,5 @@ def change_the_difficulty():
     if user_changer == 'Сложный':
         main_game_hard(start_time)
 
+
 change_the_difficulty()
