@@ -189,7 +189,6 @@ def play_easy_game(start_time, result_widget, attempts_label, timer_label):
             result_widget.see(tk.END)
             return
 
-        # Подсчет быков и коров из твоей логики
         cows = 0
         bulls = 0
         for i in range(3):
@@ -205,7 +204,6 @@ def play_easy_game(start_time, result_widget, attempts_label, timer_label):
         result_widget.insert(tk.END, f'Попытка {count}: {user_guess} - Быки: {bulls}, Коровы: {cows}\n')
         result_widget.see(tk.END)
 
-        # Проверка условий окончания игры
         if count == 15:
             result_widget.insert(tk.END, 'вы исчерпали количество попыток, хотите попробовать еще раз?\n')
             result_widget.see(tk.END)
@@ -493,10 +491,8 @@ def pusk(level):
         text1 = 'Сложный уровень'
         max_cifr = 7
 
-    # Запоминаем время начала
     start_time = time.time()
 
-    # Создаем элементы интерфейса
     uga = tk.Label(
         window,
         text='Угадай число!',
@@ -515,7 +511,6 @@ def pusk(level):
     )
     LvL.pack(pady=(0, 20))
 
-    # Счетчик попыток
     attempts_label = tk.Label(
         window,
         text=f'Попытки: 0/{max_cifr}',
@@ -525,7 +520,6 @@ def pusk(level):
     )
     attempts_label.pack(pady=(0, 10))
 
-    # Таймер
     timer_label = tk.Label(
         window,
         text='Время: 0:00',
@@ -562,7 +556,6 @@ def pusk(level):
     )
     resultat.pack(pady=20, padx=20)
 
-    # Функция для обновления таймера
     def update_timer():
         elapsed = time.time() - start_time
         minutes = int(elapsed // 60)
@@ -617,5 +610,6 @@ status = tk.Label(
     font=('Times New Roman', 12, 'bold'),
 )
 status.pack()
+
 
 window.mainloop()
